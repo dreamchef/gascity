@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/gastownhall/gascity/internal/builtinpacks"
 	"github.com/gastownhall/gascity/internal/fsys"
 )
 
@@ -2475,5 +2476,36 @@ KIRO_AGENT_MODE = "headless"
 	}
 	if kiro.Command != "kiro-cli" {
 		t.Errorf("Command = %q, want kiro (from root)", kiro.Command)
+	}
+}
+
+// TestLoadWithIncludesSkipsBundledImportsOnNonOSFS pins the hermetic-load
+// contract: bundled builtin sources only exist on the real filesystem (the
+// user-global cache), so fake-FS loads compose without them instead of
+// failing resolution.
+func TestLoadWithIncludesSkipsBundledImportsOnNonOSFS(t *testing.T) {
+	coreSource, ok := builtinpacks.Source("core")
+	if !ok {
+		t.Fatal("bundled core pack not registered")
+	}
+	fs := fsys.NewFake()
+	fs.Files["/city/city.toml"] = []byte(`
+[workspace]
+`)
+	fs.Files["/city/pack.toml"] = []byte(`
+[pack]
+name = "test"
+schema = 2
+
+[imports.core]
+source = "` + coreSource + `"
+version = "` + BundledPackImportVersion + `"
+`)
+	cfg, _, err := LoadWithIncludes(fs, "/city/city.toml")
+	if err != nil {
+		t.Fatalf("LoadWithIncludes: %v", err)
+	}
+	if dir := cfg.PackDirByName("core"); dir != "" {
+		t.Errorf("PackDirByName(core) = %q, want empty on fake FS", dir)
 	}
 }
