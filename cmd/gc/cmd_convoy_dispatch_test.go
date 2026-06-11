@@ -871,7 +871,6 @@ func TestCmdWorkflowDeleteSourceFollowsRigLaunchSourceChain(t *testing.T) {
 	}
 	if err := os.WriteFile(filepath.Join(cityDir, "city.toml"), []byte(`[workspace]
 name = "test-city"
-includes = [".gc/system/packs/core"]
 
 [daemon]
 formula_v2 = true
@@ -879,7 +878,7 @@ formula_v2 = true
 [[rigs]]
 name = "alpha"
 prefix = "BL"
-`), 0o644); err != nil {
+` + builtinImportsTOML("core")), 0o644); err != nil {
 		t.Fatalf("write city.toml: %v", err)
 	}
 	writeCatalogFile(t, cityDir, ".gc/site.toml", "[[rig]]\nname = \"alpha\"\npath = \"rigs/alpha\"\n")
@@ -5257,12 +5256,11 @@ func TestCmdWorkflowDeleteSourceAllowsStoreSelectorForAmbiguousSourceIDs(t *test
 	}
 	if err := os.WriteFile(filepath.Join(cityDir, "city.toml"), []byte(`[workspace]
 name = "test-city"
-includes = [".gc/system/packs/core"]
 
 [[rigs]]
 name = "alpha"
 prefix = "BL"
-`), 0o644); err != nil {
+` + builtinImportsTOML("core")), 0o644); err != nil {
 		t.Fatalf("WriteFile(city.toml): %v", err)
 	}
 	writeCatalogFile(t, cityDir, ".gc/site.toml", "[[rig]]\nname = \"alpha\"\npath = \"rigs/alpha\"\n")
@@ -5377,12 +5375,11 @@ func TestCmdWorkflowDeleteSourceStoreSelectorIgnoresLegacyRootInDifferentStore(t
 	}
 	if err := os.WriteFile(filepath.Join(cityDir, "city.toml"), []byte(`[workspace]
 name = "test-city"
-includes = [".gc/system/packs/core"]
 
 [[rigs]]
 name = "alpha"
 prefix = "BL"
-`), 0o644); err != nil {
+` + builtinImportsTOML("core")), 0o644); err != nil {
 		t.Fatalf("WriteFile(city.toml): %v", err)
 	}
 	writeCatalogFile(t, cityDir, ".gc/site.toml", "[[rig]]\nname = \"alpha\"\npath = \"rigs/alpha\"\n")
@@ -5500,12 +5497,11 @@ func TestCmdWorkflowReopenSourceRejectsLiveRootInDifferentStore(t *testing.T) {
 	}
 	if err := os.WriteFile(filepath.Join(cityDir, "city.toml"), []byte(`[workspace]
 name = "test-city"
-includes = [".gc/system/packs/core"]
 
 [[rigs]]
 name = "alpha"
 prefix = "BL"
-`), 0o644); err != nil {
+` + builtinImportsTOML("core")), 0o644); err != nil {
 		t.Fatalf("WriteFile(city.toml): %v", err)
 	}
 	writeCatalogFile(t, cityDir, ".gc/site.toml", "[[rig]]\nname = \"alpha\"\npath = \"rigs/alpha\"\n")

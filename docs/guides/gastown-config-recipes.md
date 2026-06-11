@@ -181,9 +181,8 @@ All three are PackV2 (`schema = 2`, `agents/<name>/`).
 name = "gastown"
 provider = "claude"
 global_fragments = ["command-glossary", "operational-awareness"]
-# Builtin packs compose only through explicit includes (gc init writes
-# these; gc doctor --fix repairs them).
-includes = [".gc/system/packs/core", ".gc/system/packs/bd"]
+# Builtin packs (core, bd) compose through explicit pinned imports in
+# pack.toml (gc init writes these; gc doctor --fix repairs them).
 
 [providers.claude]
 base = "builtin:claude"

@@ -676,7 +676,7 @@ func ensureBundledRigImportsInstalled(cityPath string, imports []config.BoundImp
 		if builtinpacks.IsSource(bound.Import.Source) {
 			imp := bound.Import
 			if strings.TrimSpace(imp.Version) == "" {
-				imp.Version = config.BundledPackImportVersion
+				imp.Version = bundledSourcePinnedVersion(imp.Source)
 			}
 			declared[bound.Binding] = imp
 		}
