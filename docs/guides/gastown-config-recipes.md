@@ -24,7 +24,7 @@ schema = 2
 
 [imports.gastown]
 source = "https://github.com/gastownhall/gascity-packs/tree/main/gastown"
-version = "sha:d3617d1319a1206ac85f69ba024ec395c49c6f4b"
+version = "sha:31382fc6dd86b747d19687f6028d8bcd85e059a7"
 ```
 
 ```toml
@@ -34,7 +34,7 @@ name = "myproject"
 
 [rigs.imports.gastown]
 source = "https://github.com/gastownhall/gascity-packs/tree/main/gastown"
-version = "sha:d3617d1319a1206ac85f69ba024ec395c49c6f4b"
+version = "sha:31382fc6dd86b747d19687f6028d8bcd85e059a7"
 ```
 
 ```bash
@@ -52,7 +52,7 @@ name = "myproject"
 
 [rigs.imports.gastown]
 source = "https://github.com/gastownhall/gascity-packs/tree/main/gastown"
-version = "sha:d3617d1319a1206ac85f69ba024ec395c49c6f4b"
+version = "sha:31382fc6dd86b747d19687f6028d8bcd85e059a7"
 
 [[rigs.patches]]
 agent = "gastown.polecat"
@@ -70,7 +70,7 @@ name = "myproject"
 
 [rigs.imports.gastown]
 source = "https://github.com/gastownhall/gascity-packs/tree/main/gastown"
-version = "sha:d3617d1319a1206ac85f69ba024ec395c49c6f4b"
+version = "sha:31382fc6dd86b747d19687f6028d8bcd85e059a7"
 
 [[rigs.patches]]
 agent = "gastown.polecat"
@@ -124,7 +124,7 @@ name = "myproject"
 
 [rigs.imports.gastown]
 source = "https://github.com/gastownhall/gascity-packs/tree/main/gastown"
-version = "sha:d3617d1319a1206ac85f69ba024ec395c49c6f4b"
+version = "sha:31382fc6dd86b747d19687f6028d8bcd85e059a7"
 
 [[rigs.patches]]
 agent = "gastown.refinery"
