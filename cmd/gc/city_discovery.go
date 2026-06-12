@@ -69,11 +69,38 @@ func implicitCityDiscoveryCeilings() []string {
 }
 
 func implicitIgnoredLegacyRuntimeRoots() []string {
-	runtimeRoot := configuredSupervisorRuntimeRoot()
-	if runtimeRoot == "" {
-		return nil
+	var roots []string
+	if runtimeRoot := configuredSupervisorRuntimeRoot(); runtimeRoot != "" {
+		roots = append(roots, runtimeRoot)
 	}
-	return []string{runtimeRoot}
+	// Also ignore .gc/ at any OS system temp directory. A supervisor or system
+	// test may create runtime state at /tmp/.gc; that must not be discovered
+	// as a city root when walking upward from a path under /tmp.
+	// Note: TMPDIR may be overridden by test infrastructure to a subdirectory
+	// of /tmp, so we always include the well-known /tmp root on Unix in
+	// addition to os.TempDir().
+	for _, sysTemp := range implicitSystemTempRoots() {
+		roots = append(roots, filepath.Join(sysTemp, citylayout.RuntimeRoot))
+	}
+	return roots
+}
+
+// implicitSystemTempRoots returns the set of OS-level system temporary
+// directories that should not be treated as Gas City project roots.
+// TMPDIR may be overridden (e.g. by test infrastructure) to a path under
+// the real /tmp, so we always include /tmp explicitly on Unix.
+func implicitSystemTempRoots() []string {
+	seen := make(map[string]bool)
+	var roots []string
+	for _, d := range []string{os.TempDir(), "/tmp"} {
+		d = filepath.Clean(d)
+		if d == "" || d == "." || seen[d] {
+			continue
+		}
+		seen[d] = true
+		roots = append(roots, d)
+	}
+	return roots
 }
 
 func configuredSupervisorRuntimeRoot() string {
